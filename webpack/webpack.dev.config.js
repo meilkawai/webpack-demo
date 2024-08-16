@@ -1,28 +1,18 @@
-const common = require('./webpack.common.config')
-const { merge } = require('webpack-merge')
-const webpack = require('webpack')
-const HtmlWebpackPlugin = require('html-webpack-plugin')
+const { merge } = require('webpack-merge');
+const common = require('./webpack.common.js');
+const webpack = require('webpack');
 
 module.exports = merge(common, {
-  mode: 'development',
-  devtool: 'inline-source-map',
-  devServer: {
-    static: '../dist',
-    hot: true,
-    // historyApiFallback: true,
-  },
-  plugins: [
-    new webpack.DefinePlugin({
-      'process.env.NODE_ENV': JSON.stringify('development'),
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'index.html', // Home 页的输出文件名
-      template: 'src/pages/home/index.html', // Home 页的模板
-      chunks: ['home'], // 只引入 home 入口的脚本
-    }),
-    new HtmlWebpackPlugin({
-      filename: 'about.html', // About 页的输出文件名
-      template: 'src/pages/about/index.html', // About 页的模板
-      chunks: ['about'], // 只引入 about 入口的脚本
-    }),]
-})
+    mode: 'development',
+    devServer: {
+        static: path.join(__dirname, 'public'), // 设置静态文件的目录
+        compress: true, // 启用 gzip 压缩
+        port: 9000, // 服务器端口
+        open: true,
+        hot: true,
+        historyApiFallback: true,
+    },
+    plugins: [
+        new webpack.HotModuleReplacementPlugin(), // 热模块替换
+    ],
+});
